@@ -22,8 +22,11 @@ RUN set -ex; \
 		mysqli \
 		opcache \
 		zip \
+		soap \
+		xml \
 	; \
 	pecl install imagick-3.4.4; \
+	pecl install xdebug; \
 	docker-php-ext-enable imagick; \
 	\
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
@@ -63,6 +66,18 @@ RUN { \
 		echo 'ignore_repeated_source = Off'; \
 		echo 'html_errors = Off'; \
 	} > /usr/local/etc/php/conf.d/error-logging.ini
+
+RUN { \
+        echo 'zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20180731/xdebug.so'; \
+        echo 'xdebug.coverage_enable=0'; \
+        echo 'xdebug.remote_enable=1'; \
+        echo 'xdebug.remote_connect_back=0'; \
+        echo 'xdebug.remote_log=/tmp/xdebug.log'; \
+        echo 'xdebug.remote_autostart=true'; \
+        echo 'xdebug.remote_port=9001'; \
+        echo 'xdebug.remote_host=host.docker.internal'; \
+        echo 'xdebug.max_nesting_level = 2500'; \
+    } >> /usr/local/etc/php/php.ini
 
 RUN a2enmod rewrite expires
 
