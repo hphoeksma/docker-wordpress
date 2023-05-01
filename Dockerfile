@@ -1,5 +1,5 @@
 # Based on https://github.com/docker-library/wordpress/tree/master/php7.3/apache
-FROM php:8.0-apache
+FROM php:8.1-apache
 
 # install the PHP extensions we need (https://make.wordpress.org/hosting/handbook/handbook/server-environment/#php-extensions)
 RUN set -ex; \
@@ -24,7 +24,7 @@ RUN set -ex; \
     zip \
     soap \
     ; \
-    pecl install imagick-3.5.1; \
+    pecl install imagick-3.7.0; \
     docker-php-ext-enable imagick; \
     docker-php-ext-enable soap; \
     \
